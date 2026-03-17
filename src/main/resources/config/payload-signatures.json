@@ -1,0 +1,58 @@
+[
+  {
+    "id": "SIG-HTTP-ADMIN",
+    "name": "HTTP admin probe",
+    "protocol": "TCP",
+    "dstPort": 80,
+    "contains": "GET /admin",
+    "severity": 4,
+    "description": "Plain HTTP request attempts to access /admin."
+  },
+  {
+    "id": "SIG-WP-LOGIN",
+    "name": "WordPress login probe",
+    "protocol": "TCP",
+    "dstPort": 80,
+    "contains": "/wp-login.php",
+    "severity": 4,
+    "description": "Plain HTTP request probes WordPress login endpoint."
+  },
+  {
+    "id": "SIG-PHP-UNIT",
+    "name": "PHPUnit eval-stdin probe",
+    "protocol": "TCP",
+    "dstPort": 80,
+    "contains": "/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php",
+    "severity": 5,
+    "description": "Common web exploit path often scanned."
+  },
+  {
+    "id": "SIG-SSH-BANNER",
+    "name": "SSH banner observed",
+    "protocol": "TCP",
+    "dstPort": 22,
+    "regex": "^SSH-",
+    "regexFlags": "i",
+    "severity": 2,
+    "description": "SSH banner present in payload (usually server->client)."
+  },
+  {
+    "id": "SIG-HTTP-BASIC-AUTH",
+    "name": "HTTP Basic Authorization header",
+    "protocol": "TCP",
+    "dstPort": 80,
+    "regex": "Authorization:\\s*Basic\\s+[A-Za-z0-9+/=]+",
+    "regexFlags": "i",
+    "severity": 3,
+    "description": "Detects Basic Auth header in plain HTTP."
+  },
+  {
+    "id": "SIG-SQLI-UNION",
+    "name": "SQLi UNION keyword",
+    "protocol": "TCP",
+    "dstPort": 80,
+    "regex": "(?i)\\bunion\\s+select\\b",
+    "severity": 4,
+    "description": "Rough SQL injection indicator in plain HTTP payload."
+  }
+]

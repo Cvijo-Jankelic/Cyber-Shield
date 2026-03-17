@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox stylesheets="@../style/registration.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.project.cybershield.controllers.RegistrationController">
+
+    <!-- LEFT PANEL -->
+    <VBox prefWidth="420" spacing="18" styleClass="left-panel">
+        <padding><Insets bottom="32" left="32" right="32" top="32" /></padding>
+
+        <HBox spacing="10" styleClass="brand-row">
+            <Label styleClass="brand-icon" text="🛡" />
+            <Label styleClass="brand-title" text="CyberShield IDS" />
+        </HBox>
+
+        <VBox spacing="10">
+            <Label styleClass="headline" text="Monitoring your network traffic">
+            <font>
+               <Font size="11.0" />
+            </font></Label>
+            <Label styleClass="subtext" text="Join thousands of security analysts monitoring traffic in real-time. Activate your license to begin packet inspection and threat mitigation." wrapText="true" />
+        </VBox>
+
+        <VBox spacing="12" styleClass="feature-list">
+
+            <HBox spacing="12" styleClass="feature-card">
+                <Label styleClass="feature-icon" text="📡" />
+                <VBox spacing="3">
+                    <Label styleClass="feature-title" text="Real-time Traffic Monitoring" />
+                    <Label styleClass="feature-text" text="Inspect packets instantly as they traverse your network " wrapText="true" />
+                </VBox>
+            </HBox>
+
+            <HBox spacing="12" styleClass="feature-card">
+                <Label styleClass="feature-icon" text="🐞" />
+                <VBox spacing="3">
+                    <Label styleClass="feature-title" text="Zero-day Threat Detection" />
+                    <Label styleClass="feature-text" text="AI-driven analysis to identify unknown attack vectors before they execute." wrapText="true" />
+                </VBox>
+            </HBox>
+
+            <HBox spacing="12" styleClass="feature-card">
+                <Label styleClass="feature-icon" text="✅" />
+                <VBox spacing="3">
+                    <Label styleClass="feature-title" text="Enterprise Compliance" />
+                    <Label styleClass="feature-text" text="ISO 27001 &amp; SOC2 Type II ready reporting modules included." wrapText="true" />
+                </VBox>
+            </HBox>
+
+        </VBox>
+
+        <Region VBox.vgrow="ALWAYS" />
+
+        <HBox spacing="8" styleClass="footer-row">
+            <Label styleClass="footer-ok" text="✔" />
+            <Label styleClass="footer-text" text="Encryption standard (AES-256)" />
+        </HBox>
+    </VBox>
+
+    <!-- RIGHT PANEL -->
+    <VBox spacing="18" styleClass="right-panel" HBox.hgrow="ALWAYS">
+        <padding><Insets bottom="42" left="56" right="56" top="42" /></padding>
+
+        <VBox spacing="6">
+            <Label styleClass="form-title" text="System Registration" />
+            <Label styleClass="form-subtitle" text="Enter your credentials to initialize your secure account." wrapText="true" />
+        </VBox>
+
+        <VBox spacing="14" styleClass="form">
+            <VBox spacing="6">
+                <Label styleClass="label" text="Full Name" />
+                <TextField fx:id="fullNameField" promptText="e.g. Alice Smith" styleClass="input" />
+            </VBox>
+
+            <VBox spacing="6">
+                <Label styleClass="label" text="Email" />
+                <TextField fx:id="emailField" promptText="name@email.com" styleClass="input" />
+            </VBox>
+
+            <GridPane hgap="14" vgap="0">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="ALWAYS" />
+                    <ColumnConstraints hgrow="ALWAYS" />
+                </columnConstraints>
+
+                <VBox spacing="6" GridPane.columnIndex="0">
+                    <Label styleClass="label" text="Set Password" />
+                    <PasswordField fx:id="passwordField" promptText="••••••••" styleClass="input" />
+                </VBox>
+
+                <VBox spacing="6" GridPane.columnIndex="1">
+                    <Label styleClass="label" text="Confirm Password" />
+                    <PasswordField fx:id="confirmPasswordField" promptText="••••••••" styleClass="input" />
+                </VBox>
+            <rowConstraints>
+               <RowConstraints />
+            </rowConstraints>
+            </GridPane>
+
+            <VBox spacing="12" styleClass="terms">
+
+                <Button maxWidth="Infinity" onAction="#onActivate" styleClass="primary-btn" text="Register Account" />
+            </VBox>
+
+            <HBox alignment="CENTER" spacing="6" styleClass="bottom-link">
+                <Label styleClass="hint" text="Already have an active system?" />
+                <Hyperlink onAction="#onBackToLogin" styleClass="bottom-hlink" text="Back to Login" />
+            </HBox>
+        </VBox>
+    </VBox>
+
+</HBox>

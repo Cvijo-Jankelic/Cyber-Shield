@@ -1,0 +1,189 @@
+.root {
+    -fx-font-family: "Segoe UI";
+    -fx-background-color: #101622;
+}
+
+/* Background grid */
+.bg-grid {
+    -fx-background-color: transparent;
+    /* JavaFX nema 1:1 CSS grid pattern, ali možeš fake-ati s background image.
+       Najlakše: ostavi kao solid + glow; ili koristi PNG pattern kao background. */
+    -fx-opacity: 1;
+}
+
+/* Glow overlay (radial-ish) */
+.bg-glow {
+    -fx-background-color: transparent;
+    -fx-effect: dropshadow(gaussian, rgba(19,91,236,0.35), 220, 0.35, 0, 0);
+    -fx-opacity: 0.45;
+}
+
+/* Status bar */
+.status-bar {
+    -fx-padding: 24 24 0 24;
+}
+.status-pill {
+    -fx-alignment: CENTER_RIGHT;
+}
+.status-text {
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}
+.status-dot-wrap { }
+.status-dot {
+    -fx-min-width: 10px;
+    -fx-min-height: 10px;
+    -fx-max-width: 10px;
+    -fx-max-height: 10px;
+    -fx-background-radius: 999;
+    -fx-background-color: #10b981;
+}
+
+/* Card */
+.card {
+    -fx-background-color: rgba(22, 31, 46, 0.92); /* card-dark */
+    -fx-background-radius: 14;
+    -fx-border-radius: 14;
+    -fx-border-color: #1f2a3f;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.45), 28, 0.25, 0, 10);
+}
+
+/* Header/Footer sections */
+.card-header {
+    -fx-padding: 26 26 18 26;
+    -fx-border-color: transparent transparent rgba(31,42,63,0.6) transparent;
+    -fx-border-width: 0 0 1 0;
+}
+.card-body {
+    -fx-padding: 22 26 18 26;
+}
+.card-footer {
+    -fx-padding: 14 26 16 26;
+    -fx-background-color: rgba(19, 27, 41, 0.95);
+    -fx-border-color: rgba(31,42,63,0.9) transparent transparent transparent;
+    -fx-border-width: 1 0 0 0;
+    -fx-background-radius: 0 0 14 14;
+    -fx-border-radius: 0 0 14 14;
+}
+
+/* Logo */
+.logo-box {
+    -fx-min-width: 48px;
+    -fx-min-height: 48px;
+    -fx-max-width: 48px;
+    -fx-max-height: 48px;
+    -fx-background-radius: 10;
+    -fx-background-color: #135bec;
+    -fx-effect: dropshadow(gaussian, rgba(19,91,236,0.35), 18, 0.25, 0, 6);
+}
+.logo-icon {
+    -fx-text-fill: white;
+    -fx-font-size: 24px;
+    -fx-font-weight: 700;
+}
+
+/* Titles */
+.title {
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-font-weight: 800;
+}
+.subtitle {
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}
+
+/* Form fields */
+.field-label {
+    -fx-text-fill: #cbd5e1;
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
+}
+
+.field-wrap {
+    -fx-alignment: CENTER_LEFT;
+    -fx-background-color: #101622; /* input-bg */
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #1f2a3f;
+    -fx-border-width: 1;
+    -fx-padding: 0 10 0 10;
+}
+
+.field {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: rgba(148, 163, 184, 0.65);
+    -fx-padding: 10 6 10 6;
+    -fx-font-size: 13px;
+    -fx-border-color: transparent;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-pref-height: 42px;
+    -fx-max-width: Infinity;
+}
+
+.field:focused {
+    -fx-background-color: transparent;
+}
+
+.field-wrap {
+    -fx-background-color: #101622;
+    -fx-background-radius: 10;
+    -fx-padding: 0 10 0 10;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+}
+
+
+.field-icon {
+    -fx-text-fill: rgba(148, 163, 184, 0.7);
+    -fx-font-size: 14px;
+}
+
+/* Checkbox + links */
+.checkbox {
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}
+
+.link {
+    -fx-text-fill: #135bec;
+    -fx-font-weight: 700;
+    -fx-underline: false;
+}
+.link:hover {
+    -fx-underline: true;
+}
+
+/* Primary button */
+.primary-btn {
+    -fx-background-color: #135bec;
+    -fx-text-fill: white;
+    -fx-font-weight: 800;
+    -fx-background-radius: 10;
+    -fx-padding: 12 14 12 14;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(19,91,236,0.25), 14, 0.2, 0, 6);
+}
+.primary-btn:hover {
+    -fx-background-color: #1d4ed8;
+}
+
+/* Footer text */
+.footer-text {
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 11px;
+    -fx-font-weight: 600;
+}
+.footer-meta {
+    -fx-text-fill: rgba(148, 163, 184, 0.55);
+    -fx-font-size: 10px;
+    -fx-font-family: "Consolas";
+    -fx-font-weight: 700;
+    -fx-letter-spacing: 1px;
+}
