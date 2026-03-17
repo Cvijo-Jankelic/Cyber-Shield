@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+
+<!--
+    Sentinel IDS Dashboard - Main FXML Layout
+    Enterprise Intrusion Detection System Interface
+-->
+
+<BorderPane styleClass="root" stylesheets="@../style/dashboard.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.project.cybershield.controllers.DashboardController">
+
+    <!-- ============================================
+         LEFT SIDEBAR - Navigation Menu
+         ============================================ -->
+    <left>
+        <VBox prefWidth="256" spacing="0" styleClass="sidebar">
+
+            <!-- Logo Header -->
+            <VBox spacing="8" styleClass="sidebar-header">
+                <HBox alignment="CENTER_LEFT" spacing="12">
+                    <!-- Logo Icon -->
+                    <Region prefHeight="40" prefWidth="40" styleClass="logo-icon" />
+
+                    <!-- App Title and Version -->
+                    <VBox spacing="2">
+                        <Label styleClass="logo-title" text="SentinelIDS" />
+                        <Label styleClass="logo-version" text="v4.2.0-stable" />
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <!-- Navigation Menu Items -->
+            <VBox spacing="8" styleClass="nav-menu" VBox.vgrow="ALWAYS">
+
+                <!-- Dashboard (Active) -->
+                <Button fx:id="btnDashboard" graphicTextGap="12" styleClass="nav-item, nav-item-active" text="Dashboard">
+                    <graphic>
+                        <Label styleClass="material-icon" text="" />
+                    </graphic>
+                </Button>
+
+                <!-- Traffic Logs -->
+                <Button fx:id="btnTrafficLogs" graphicTextGap="12" styleClass="nav-item" text="Traffic Logs">
+                    <graphic>
+                        <Label styleClass="material-icon" text="" />
+                    </graphic>
+                </Button>
+
+                <!-- Rules Management -->
+                <Button fx:id="btnRules" graphicTextGap="12" styleClass="nav-item" text="Rules Management">
+                    <graphic>
+                        <Label styleClass="material-icon" text="" />
+                    </graphic>
+                </Button>
+
+                <!-- Network Map -->
+                <Button fx:id="btnNetworkMap" graphicTextGap="12" styleClass="nav-item" text="Network Map">
+                    <graphic>
+                        <Label styleClass="material-icon" text="" />
+                    </graphic>
+                </Button>
+
+                <!-- Threat Intelligence -->
+                <Button fx:id="btnThreat" graphicTextGap="12" styleClass="nav-item" text="Threat Intelligence">
+                    <graphic>
+                        <Label styleClass="material-icon" text="" />
+                    </graphic>
+                </Button>
+            </VBox>
+
+            <!-- Bottom Footer Section -->
+            <VBox spacing="8" styleClass="sidebar-footer">
+
+                <!-- Settings Button -->
+                <Button fx:id="btnSettings" graphicTextGap="12" styleClass="nav-item" text="System Settings">
+                    <graphic>
+                        <Label styleClass="material-icon" text="" />
+                    </graphic>
+                </Button>
+
+                <!-- User Profile Card -->
+                <HBox alignment="CENTER_LEFT" spacing="12" styleClass="user-profile">
+                    <Region styleClass="user-avatar" />
+                    <VBox spacing="2">
+                        <Label styleClass="user-name" text="Admin User" />
+                        <Label styleClass="user-role" text="SOC Analyst L3" />
+                    </VBox>
+                </HBox>
+            </VBox>
+
+        </VBox>
+    </left>
+
+    <!-- ============================================
+         CENTER - Main Dashboard Content
+         ============================================ -->
+    <center>
+        <VBox styleClass="main-content">
+
+            <!-- ============================================
+                 TOP HEADER BAR
+                 ============================================ -->
+            <HBox alignment="CENTER_LEFT" spacing="0" styleClass="header">
+
+                <!-- Left: Title and Status -->
+                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                    <Label styleClass="header-title" text="Security Operations Center" />
+
+                    <!-- Status Indicator -->
+                    <HBox alignment="CENTER_LEFT" spacing="8">
+                        <Circle radius="4" styleClass="status-indicator" />
+                        <Label styleClass="status-text" text="SYSTEM ONLINE" />
+                        <Label styleClass="divider" text="|" />
+                        <Label styleClass="update-label" text="Last Updated: " />
+                        <Label fx:id="lblLastUpdate" styleClass="update-time" text="10:42:35 UTC" />
+                    </HBox>
+                </VBox>
+
+                <!-- Right: Action Buttons -->
+                <HBox alignment="CENTER_RIGHT" spacing="12">
+               <ComboBox fx:id="cmbLanguage" onAction="#setupLanguageSelector" promptText="Language" styleClass="language-selector" />
+                    <!-- Time Range Selector -->
+                    <Button fx:id="btnTimeRange" styleClass="btn-secondary" text="Last 24 Hours">
+                        <graphic>
+                            <Label styleClass="material-icon-small" text="" />
+                        </graphic>
+                    </Button>
+
+                    <!-- Export Button -->
+                    <Button fx:id="btnExport" styleClass="btn-primary" text="Export Report">
+                        <graphic>
+                            <Label styleClass="material-icon-small" text="" />
+                        </graphic>
+                    </Button>
+               <Button fx:id="btnDownloadThreats" onAction="#handleDownloadThreatIntelligence" styleClass="btn-primary" text="Download">
+                  <graphic>
+                     <Label styleClass="material-icon-small" text="" />
+                  </graphic>
+               </Button>
+                </HBox>
+            </HBox>
+
+            <!-- ============================================
+                 SCROLLABLE DASHBOARD CONTENT
+                 ============================================ -->
+            <ScrollPane fitToWidth="true" styleClass="dashboard-scroll" VBox.vgrow="ALWAYS">
+
+                <VBox spacing="24" styleClass="dashboard-content">
+
+                    <!-- ============================================
+                         STATISTICS CARDS ROW
+                         ============================================ -->
+                    <GridPane hgap="16" styleClass="stats-grid" vgap="16">
+
+                        <!-- Card 1: IDS Status -->
+                        <VBox styleClass="stat-card, stat-card-success" GridPane.columnIndex="0" GridPane.rowIndex="0">
+
+                            <Label styleClass="stat-label" text="IDS Status" />
+
+                            <HBox alignment="BOTTOM_LEFT" spacing="8">
+                                <Label styleClass="stat-value" text="Running" />
+                                <Label styleClass="material-icon, status-icon-success" text="" />
+                            </HBox>
+
+                            <ProgressBar maxWidth="Infinity" progress="1.0" styleClass="stat-progress" />
+
+                            <Label styleClass="stat-info" text="Uptime: 14d 02h" />
+                        </VBox>
+
+                        <!-- Card 2: Capture Mode -->
+                        <VBox styleClass="stat-card" GridPane.columnIndex="1" GridPane.rowIndex="0">
+
+                            <Label styleClass="stat-label" text="Capture Mode" />
+
+                            <VBox spacing="4">
+                                <Label styleClass="stat-value" text="Live: eth0" />
+                                <Label styleClass="stat-subtext" text="Promiscuous Mode" />
+                            </VBox>
+
+                            <HBox alignment="CENTER_LEFT" spacing="8">
+                                <Circle radius="3" styleClass="pulse-dot" />
+                                <Label styleClass="stat-info, capturing-text" text="Capturing" />
+                            </HBox>
+                        </VBox>
+
+                        <!-- Card 3: Packets Per Second -->
+                        <VBox styleClass="stat-card" GridPane.columnIndex="2" GridPane.rowIndex="0">
+
+                            <Label styleClass="stat-label" text="Packets Per Second" />
+
+                            <HBox alignment="BASELINE_LEFT" spacing="8">
+                                <Label styleClass="stat-value-large" text="12,450" />
+                                <Label styleClass="stat-change-positive" text="↑ 12%" />
+                            </HBox>
+
+                            <!-- Sparkline Container -->
+                            <HBox fx:id="sparklineContainer" alignment="BOTTOM_LEFT" spacing="1" styleClass="sparkline" />
+                        </VBox>
+
+                        <!-- Card 4: Total Alerts -->
+                        <VBox styleClass="stat-card" GridPane.columnIndex="3" GridPane.rowIndex="0">
+
+                            <Label styleClass="stat-label" text="Total Alerts (5m)" />
+                            <Label styleClass="stat-value-large" text="42" />
+                            <Label styleClass="stat-info, alert-info" text="+5% vs avg" />
+                        </VBox>
+
+                        <!-- Card 5: Critical Alerts -->
+                        <VBox styleClass="stat-card, stat-card-critical" GridPane.columnIndex="4" GridPane.rowIndex="0">
+
+                            <Label styleClass="stat-label-critical" text="High Severity Alerts" />
+                            <Label styleClass="stat-value-critical" text="3" />
+                            <Label styleClass="badge-critical" text="ACTION REQUIRED" />
+                        </VBox>
+                  <columnConstraints>
+                     <ColumnConstraints />
+                     <ColumnConstraints />
+                     <ColumnConstraints />
+                     <ColumnConstraints />
+                     <ColumnConstraints />
+                  </columnConstraints>
+                  <rowConstraints>
+                     <RowConstraints />
+                  </rowConstraints>
+
+                    </GridPane>
+
+                    <!-- ============================================
+                         CHARTS ROW
+                         ============================================ -->
+                    <GridPane hgap="16" styleClass="charts-grid" vgap="16">
+
+                        <!-- Chart 1: Line Chart - Alerts Over Time -->
+                        <VBox styleClass="chart-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
+
+                            <!-- Chart Header -->
+                            <HBox alignment="CENTER_LEFT" spacing="0">
+                                <VBox HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                                    <Label styleClass="chart-title" text="Alerts Over Time" />
+                                    <Label styleClass="chart-subtitle" text="By Severity • Last 24 Hours" />
+                                </VBox>
+                                <Button fx:id="btnChartOptions1" styleClass="btn-icon" text="⋯" />
+                            </HBox>
+
+                            <!-- Line Chart -->
+                            <LineChart fx:id="alertsLineChart" styleClass="line-chart" VBox.vgrow="ALWAYS">
+                                <xAxis>
+                                    <CategoryAxis side="BOTTOM" styleClass="chart-axis" />
+                                </xAxis>
+                                <yAxis>
+                                    <NumberAxis side="LEFT" styleClass="chart-axis" />
+                                </yAxis>
+                            </LineChart>
+                        </VBox>
+
+                        <!-- Chart 2: Pie Chart - Protocol Distribution -->
+                        <VBox styleClass="chart-card" GridPane.columnIndex="1" GridPane.rowIndex="0">
+
+                            <!-- Chart Header -->
+                            <VBox spacing="4">
+                                <Label styleClass="chart-title" text="Protocol Distribution" />
+                                <Label styleClass="chart-subtitle" text="Traffic Volume by Protocol" />
+                            </VBox>
+
+                            <!-- Pie Chart -->
+                            <StackPane alignment="CENTER" VBox.vgrow="ALWAYS">
+                                <PieChart fx:id="protocolPieChart" legendVisible="false" styleClass="pie-chart" />
+                            </StackPane>
+
+                            <!-- Custom Legend -->
+                            <HBox alignment="CENTER" spacing="16" styleClass="chart-legend">
+                                <HBox alignment="CENTER" spacing="8">
+                                    <Circle radius="4" styleClass="legend-tcp" />
+                                    <Label styleClass="legend-label" text="TCP (65%)" />
+                                </HBox>
+                                <HBox alignment="CENTER" spacing="8">
+                                    <Circle radius="4" styleClass="legend-udp" />
+                                    <Label styleClass="legend-label" text="UDP (20%)" />
+                                </HBox>
+                                <HBox alignment="CENTER" spacing="8">
+                                    <Circle radius="4" styleClass="legend-icmp" />
+                                    <Label styleClass="legend-label" text="ICMP (15%)" />
+                                </HBox>
+                            </HBox>
+                        </VBox>
+
+                        <!-- Chart 3: Top Attacking IPs -->
+                        <VBox styleClass="chart-card" GridPane.columnIndex="2" GridPane.rowIndex="0">
+
+                            <!-- Chart Header -->
+                            <VBox spacing="4">
+                                <Label styleClass="chart-title" text="Top Attacking IPs" />
+                                <Label styleClass="chart-subtitle" text="Source by Alert Count" />
+                            </VBox>
+
+                            <!-- IP Bars Container (populated programmatically) -->
+                            <VBox fx:id="topIPsContainer" alignment="CENTER" spacing="16" VBox.vgrow="ALWAYS" />
+                        </VBox>
+                  <columnConstraints>
+                     <ColumnConstraints />
+                     <ColumnConstraints />
+                     <ColumnConstraints />
+                  </columnConstraints>
+                  <rowConstraints>
+                     <RowConstraints />
+                  </rowConstraints>
+
+                    </GridPane>
+
+                    <!-- ============================================
+                         INCIDENTS TABLE
+                         ============================================ -->
+                    <VBox styleClass="table-card">
+
+                        <!-- Table Header -->
+                        <HBox alignment="CENTER_LEFT" spacing="12" styleClass="table-header">
+
+                            <!-- Icon and Title -->
+                            <Region styleClass="table-icon" />
+
+                            <VBox spacing="2" HBox.hgrow="ALWAYS">
+                                <Label styleClass="table-title" text="Recent Incidents" />
+                                <Label styleClass="table-subtitle" text="Real-time log of detected threats" />
+                            </VBox>
+
+                            <!-- Search Field -->
+                            <TextField fx:id="txtSearch" prefWidth="256" promptText="Search logs..." styleClass="search-field" />
+
+                            <!-- Filter Button -->
+                            <Button fx:id="btnFilter" styleClass="btn-icon-secondary">
+                                <graphic>
+                                    <Label styleClass="material-icon-small" text="" />
+                                </graphic>
+                            </Button>
+                        </HBox>
+
+                        <!-- Table View -->
+                        <TableView fx:id="incidentsTable"  styleClass="incidents-table" VBox.vgrow="ALWAYS">
+
+                            <columns>
+                                <!-- Timestamp Column -->
+                                <TableColumn fx:id="colTimestamp" prefWidth="160" styleClass="table-col" text="TIMESTAMP" />
+
+                                <!-- Rule ID Column -->
+                                <TableColumn fx:id="colRuleId" prefWidth="100" styleClass="table-col" text="RULE ID" />
+
+                                <!-- Attack Name Column -->
+                                <TableColumn fx:id="colAttackName" prefWidth="250" styleClass="table-col" text="ATTACK NAME" />
+
+                                <!-- Severity Column -->
+                                <TableColumn fx:id="colSeverity" prefWidth="120" styleClass="table-col" text="SEVERITY" />
+
+                                <!-- Source → Destination Column -->
+                                <TableColumn fx:id="colSourceDest" prefWidth="280" styleClass="table-col" text="SOURCE → DESTINATION" />
+
+                                <!-- Actions Column -->
+                                <TableColumn fx:id="colActions" prefWidth="80" styleClass="table-col" text="ACTIONS" />
+                            </columns>
+                        </TableView>
+
+                        <!-- Table Footer - Pagination -->
+                        <HBox alignment="CENTER_LEFT" styleClass="table-footer">
+
+                            <!-- Results Info -->
+                            <Label fx:id="lblTableInfo" styleClass="table-info" text="Showing 5 of 42 alerts" HBox.hgrow="ALWAYS" />
+
+                            <!-- Pagination Buttons -->
+                            <HBox alignment="CENTER_RIGHT" spacing="8">
+                                <Button fx:id="btnPrev" styleClass="btn-pagination" text="Prev" />
+                                <Button fx:id="btnPage1" styleClass="btn-pagination, btn-pagination-active" text="1" />
+                                <Button fx:id="btnPage2" styleClass="btn-pagination" text="2" />
+                                <Button fx:id="btnPage3" styleClass="btn-pagination" text="3" />
+                                <Button fx:id="btnNext" styleClass="btn-pagination" text="Next" />
+                            </HBox>
+                        </HBox>
+
+                    </VBox>
+
+                </VBox>
+            </ScrollPane>
+        </VBox>
+    </center>
+
+</BorderPane>
