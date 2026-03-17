@@ -1,0 +1,116 @@
+.root {
+    -fx-background-color: #101622;
+    -fx-font-family: "Segoe UI";
+}
+
+.left-panel {
+    -fx-background-color: #192233;
+    -fx-border-color: #324467;
+    -fx-border-width: 0 1 0 0;
+}
+
+.right-panel {
+    -fx-background-color: #101622;
+}
+
+.brand-icon {
+    -fx-font-size: 26px;
+}
+
+.brand-title {
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: 700;
+}
+
+.headline {
+    -fx-text-fill: white;
+    -fx-font-size: 34px;
+    -fx-font-weight: 800;
+}
+
+.subtext, .form-subtitle, .feature-text, .hint, .footer-text {
+    -fx-text-fill: #92a4c9;
+}
+
+.form-title {
+    -fx-text-fill: white;
+    -fx-font-size: 26px;
+    -fx-font-weight: 800;
+}
+
+.label {
+    -fx-text-fill: white;
+    -fx-font-weight: 600;
+}
+
+.input {
+    -fx-background-color: #192233;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #92a4c9;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-color: #324467;
+    -fx-padding: 12 14 12 14;
+}
+
+.input:focused {
+    -fx-border-color: #135bec;
+    -fx-focus-color: #135bec;
+    -fx-faint-focus-color: transparent;
+}
+
+.mono {
+    -fx-font-family: "Consolas";
+}
+
+.feature-card {
+    -fx-background-color: rgba(16,22,34,0.5);
+    -fx-border-color: rgba(50,68,103,0.5);
+    -fx-border-radius: 14px;
+    -fx-background-radius: 14px;
+    -fx-padding: 12;
+}
+
+.feature-icon {
+    -fx-text-fill: #135bec;
+    -fx-font-size: 18px;
+    -fx-background-color: rgba(19,91,236,0.2);
+    -fx-padding: 8;
+    -fx-background-radius: 10px;
+}
+
+.feature-title {
+    -fx-text-fill: white;
+    -fx-font-weight: 700;
+}
+
+.hint-link, .bottom-hlink {
+    -fx-text-fill: #135bec;
+    -fx-font-weight: 600;
+}
+
+.hint-link:hover, .bottom-hlink:hover {
+    -fx-underline: true;
+}
+
+.checkbox {
+    -fx-text-fill: #92a4c9;
+}
+
+.primary-btn {
+    -fx-background-color: #135bec;
+    -fx-text-fill: white;
+    -fx-font-weight: 800;
+    -fx-background-radius: 12px;
+    -fx-padding: 12 18 12 18;
+}
+
+.primary-btn:hover {
+    -fx-background-color: #0f4dd0;
+}
+
+.footer-ok {
+    -fx-text-fill: #22c55e;
+    -fx-font-weight: 800;
+}

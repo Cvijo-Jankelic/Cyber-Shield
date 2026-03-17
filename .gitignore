@@ -37,3 +37,17 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Testovi ###
+src/main/java/com/project/cybershield/test/
+
+### Logovi ###
+logs/
+
+### Data ###
+data/
+database-properties
+src/main/resources/config
+
+### Api ###
+src/main/java/com/project/cybershield/api/AbuseIPDBClient.java

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane prefHeight="400.0" prefWidth="600.0" stylesheets="@../style/login.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.project.cybershield.controllers.LoginController">
+
+
+    <Pane styleClass="bg-grid" />
+    <Pane styleClass="bg-glow" />
+
+    <BorderPane maxHeight="700" maxWidth="900" styleClass="overlay">
+
+        <top>
+            <HBox styleClass="status-bar" BorderPane.alignment="TOP_RIGHT">
+                <Region HBox.hgrow="ALWAYS" />
+                <HBox spacing="8" styleClass="status-pill">
+                    <StackPane styleClass="status-dot-wrap">
+                        <Region styleClass="status-dot" />
+                    </StackPane>
+                    <Label styleClass="status-text" text="Gateway: Online" />
+                </HBox>
+            </HBox>
+        </top>
+        <center>
+            <StackPane>
+                <VBox maxWidth="480" styleClass="card">
+
+                    <!-- Header -->
+                    <VBox alignment="CENTER" spacing="8" styleClass="card-header">
+                        <StackPane styleClass="logo-box">
+                            <!-- Ikona: stavi Label i kasnije zamijeni Ikonli/SVG -->
+                            <Label styleClass="logo-icon" text="🛡" />
+                        </StackPane>
+
+                        <Label styleClass="title" text="Intrusion Detection System" />
+                        <Label styleClass="subtitle" text="Secure Gateway Access" />
+                    </VBox>
+
+                    <!-- Form -->
+                    <VBox spacing="14" styleClass="card-body">
+
+                        <!-- Username -->
+                        <VBox spacing="6">
+                            <Label styleClass="field-label" text="Username" />
+                            <HBox styleClass="field-wrap">
+                                <TextField fx:id="usernameField" promptText="Enter User ID" styleClass="field" />
+                                <Label styleClass="field-icon" text="👤" />
+                            </HBox>
+                        </VBox>
+
+                        <!-- Password -->
+                        <VBox spacing="6">
+                            <Label styleClass="field-label" text="Password" />
+                            <HBox styleClass="field-wrap">
+                                <PasswordField fx:id="passwordField" promptText="••••••••" styleClass="field" />
+                                <Label styleClass="field-icon" text="👁" />
+                            </HBox>
+                        </VBox>
+
+                        <!-- Utility row -->
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <CheckBox fx:id="rememberMe" styleClass="checkbox" text="Remember me" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Hyperlink onAction="#onForgotPassword" styleClass="link" text="Forgot password?" />
+                        </HBox>
+
+                        <!-- Button -->
+                        <Button onAction="#onLogin" styleClass="primary-btn" text="LOGIN">
+                     <VBox.margin>
+                        <Insets left="175.0" />
+                     </VBox.margin></Button>
+
+                    </VBox>
+
+                    <!-- Footer -->
+                    <VBox alignment="CENTER" spacing="8" styleClass="card-footer">
+                        <HBox alignment="CENTER" spacing="6">
+                            <Label styleClass="footer-text" text="Need access?" />
+                            <Hyperlink onAction="#onGoRegister" styleClass="link" text="Register New Account" />
+                        </HBox>
+
+                        <HBox alignment="CENTER" spacing="18">
+                            <Label styleClass="footer-meta" text="VER: 4.2.0.1" />
+                            <Label styleClass="footer-meta" text="SECURE-256" />
+                        </HBox>
+                    </VBox>
+
+                </VBox>
+            </StackPane>
+        </center>
+
+    </BorderPane>
+
+
+</StackPane>
