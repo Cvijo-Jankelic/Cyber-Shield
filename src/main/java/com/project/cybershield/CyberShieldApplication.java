@@ -13,32 +13,40 @@ import java.io.IOException;
 public class CyberShieldApplication extends Application {
     private static final Logger logger = LoggerFactory.getLogger(CyberShieldApplication.class);
 
-    private static final String FXML_FILE = "/com/project/cybershield/ui/registration-page.fxml";
+    private static final String INITIAL_VIEW = "/com/project/cybershield/ui/login-page.fxml";
+    private static final double INITIAL_WIDTH = 1200;
+    private static final double INITIAL_HEIGHT = 800;
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        try{
-            FXMLLoader loader = new FXMLLoader(CyberShieldApplication.class.getResource(FXML_FILE));
-            Parent root = loader.load();
-
-            Scene scene = new Scene(root);
-
+        try {
+            Scene scene = createScene(INITIAL_VIEW);
             primaryStage.setTitle("CyberShield");
             primaryStage.setScene(scene);
+            primaryStage.setMinWidth(960);
+            primaryStage.setMinHeight(640);
             primaryStage.show();
-            System.out.println("[APP] CyberShield started - Auth screen loaded");
+            logger.info("CyberShield started with initial view: {}", INITIAL_VIEW);
+        } catch (IOException e) {
+            logger.error("Error loading initial FXML view: {}", INITIAL_VIEW, e);
+            throw e;
+        }
+    }
 
-        }catch (IOException e){
-            logger.error("Error loading FXML file", e);
-            logger.info("Error loading FXML file");
-            System.exit(1);
+    private Scene createScene(String fxmlPath) throws IOException {
+        var resource = CyberShieldApplication.class.getResource(fxmlPath);
+        if (resource == null) {
+            throw new IOException("FXML resource not found: " + fxmlPath);
         }
 
+        FXMLLoader loader = new FXMLLoader(resource);
+        Parent root = loader.load();
+        return new Scene(root, INITIAL_WIDTH, INITIAL_HEIGHT);
     }
 
     @Override
     public void stop() throws Exception {
-        System.out.println("[APP] CyberShield shutting down...");
+        logger.info("CyberShield shutting down...");
         super.stop();
     }
 
