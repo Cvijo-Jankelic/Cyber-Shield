@@ -7,13 +7,15 @@ import java.util.Objects;
 
 public class User {
     private Long id;
+    private String email;
     private String username;
     private String password;
     private Role role;
     private LocalDateTime created_at;
 
-    public User(Long id, String username, String password, Role role, LocalDateTime created_at) {
+    public User(Long id, String email, String username, String password, Role role, LocalDateTime created_at) {
         this.id = id;
+        this.email = email;
         this.username = username;
         this.password = password;
         this.role = role;
@@ -26,6 +28,14 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getUsername() {
@@ -64,18 +74,24 @@ public class User {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && Objects.equals(username, user.username) && Objects.equals(password, user.password) && role == user.role && Objects.equals(created_at, user.created_at);
+        return Objects.equals(id, user.id)
+                && Objects.equals(email, user.email)
+                && Objects.equals(username, user.username)
+                && Objects.equals(password, user.password)
+                && role == user.role
+                && Objects.equals(created_at, user.created_at);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, role, created_at);
+        return Objects.hash(id, email, username, password, role, created_at);
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
+                ", email='" + email + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", role=" + role +
