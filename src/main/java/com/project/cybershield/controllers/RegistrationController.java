@@ -55,7 +55,7 @@ public class RegistrationController {
         logger.info("[REGISTRATION] UI registration attempt: {}", email);
 
         try {
-            register(username, password, confirmPassword, Role.ANALYST);
+            register(username, email, password, confirmPassword, Role.ANALYST);
             showAlert(Alert.AlertType.INFORMATION, "Success", "Account successfully registered. Please log in.");
             logger.info("[UI] Registration successful for {}", email);
             goToLogin();
@@ -73,14 +73,15 @@ public class RegistrationController {
         goToLogin();
     }
 
-    public User register(String username, String password, String confirmPassword, Role role) throws RegistrationException {
-        logger.info("[REGISTRATION] Registration attempt for user: {}", username);
+    public User register(String username, String email, String password, String confirmPassword, Role role) throws RegistrationException {
+        logger.info("[REGISTRATION] Registration attempt for user: {} ({})", username, email);
 
         try {
 
             username = sanitizeUsername(username);
+            email = sanitizeEmail(email);
 
-            User registeredUser = registerService.register(username, password, confirmPassword, role);
+            User registeredUser = registerService.register(username, email, password, confirmPassword, role);
             logger.info("[CONTROLLER] Registration successful for: {}", username);
 
             return registeredUser;
@@ -115,6 +116,11 @@ public class RegistrationController {
         username = username.replaceAll("[^a-zA-Z0-9_]", "");
 
         return username;
+    }
+
+    private String sanitizeEmail(String email) {
+        if (email == null) return null;
+        return email.trim().toLowerCase();
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
