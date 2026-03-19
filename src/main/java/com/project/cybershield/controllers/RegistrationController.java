@@ -5,11 +5,10 @@ import com.project.cybershield.enums.Role;
 import com.project.cybershield.exceptions.RegistrationException;
 import com.project.cybershield.repository.UserRepo;
 import com.project.cybershield.services.RegisterService;
+import com.project.cybershield.util.ViewNavigator;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +18,6 @@ import java.sql.SQLException;
 
 public class RegistrationController {
     private static final String LOGIN_FILE = "/com/project/cybershield/ui/login-page.fxml";
-    private static final String DASHBOARD_FILE = "/com/project/cybershield/ui/dashboard.fxml";
     private static final UserRepo userRepo = new UserRepo();
 
     private static final Logger logger =
@@ -49,8 +47,7 @@ public class RegistrationController {
 
     @FXML
     private void onActivate() {
-
-        String fullName = fullNameField.getText();
+        String username = fullNameField.getText();
         String email = emailField.getText();
         String password = passwordField.getText();
         String confirmPassword = confirmPasswordField.getText();
@@ -58,24 +55,15 @@ public class RegistrationController {
         logger.info("[REGISTRATION] UI registration attempt: {}", email);
 
         try {
-
-            User user = register(fullName, password, confirmPassword, Role.ANALYST);
-
-            showAlert("Success",
-                    "Account successfully registered.");
-
+            register(username, password, confirmPassword, Role.ANALYST);
+            showAlert(Alert.AlertType.INFORMATION, "Success", "Account successfully registered. Please log in.");
             logger.info("[UI] Registration successful for {}", email);
-
             goToLogin();
-
         } catch (RegistrationException e) {
-
-            showAlert("Registration failed", e.getMessage());
-
+            showAlert(Alert.AlertType.ERROR, "Registration failed", e.getMessage());
         } catch (Exception e) {
-
             logger.error("Unexpected error", e);
-            showAlert("Error", "Unexpected error occurred.");
+            showAlert(Alert.AlertType.ERROR, "Error", "Unexpected error occurred.");
         }
     }
 
@@ -129,32 +117,20 @@ public class RegistrationController {
         return username;
     }
 
-    private void showAlert(String title, String message) {
-
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
-
         alert.showAndWait();
     }
 
     private void goToLogin() {
-
         try {
-
-            Stage stage = (Stage) fullNameField.getScene().getWindow();
-
-            // load login scene
-            FXMLLoader loader =
-                    new FXMLLoader(getClass().getResource(DASHBOARD_FILE));
-
-            stage.getScene().setRoot(loader.load());
-
-        } catch (Exception e) {
-
+            ViewNavigator.switchScene(fullNameField, LOGIN_FILE);
+        } catch (IOException e) {
             logger.error("Failed to load login screen", e);
+            showAlert(Alert.AlertType.ERROR, "Navigation Error", "Unable to open the login screen.");
         }
     }
 }
