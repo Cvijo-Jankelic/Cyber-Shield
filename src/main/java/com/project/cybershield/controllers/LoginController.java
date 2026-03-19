@@ -4,11 +4,10 @@ import com.project.cybershield.entities.User;
 import com.project.cybershield.exceptions.AuthenticationException;
 import com.project.cybershield.repository.UserRepo;
 import com.project.cybershield.services.LoginService;
+import com.project.cybershield.util.ViewNavigator;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +19,7 @@ import java.sql.SQLException;
  */
 public class LoginController {
 
+    private static final String DASHBOARD_FILE = "/com/project/cybershield/ui/dashboard.fxml";
     private static final String REG_FILE = "/com/project/cybershield/ui/registration-page.fxml";
 
     private static final Logger logger =
@@ -56,54 +56,37 @@ public class LoginController {
 
     @FXML
     private void onLogin() {
-
         String username = usernameField.getText();
         String password = passwordField.getText();
 
-        logger.info("[UI] Login attempt user={} server={}", username);
+        logger.info("[UI] Login attempt for user={}", username);
 
         try {
-
-            User user = login(username, password);
-
-            showAlert("Success", "Connection established.");
-
+            login(username, password);
+            openView(DASHBOARD_FILE);
             logger.info("[UI] Login success for {}", username);
-
-            // ovdje ide load dashboard scene
-
         } catch (AuthenticationException e) {
-
-            showAlert("Login Failed", e.getMessage());
-
+            showAlert(Alert.AlertType.ERROR, "Login Failed", e.getMessage());
+        } catch (IOException e) {
+            logger.error("Failed to open dashboard after login", e);
+            showAlert(Alert.AlertType.ERROR, "Navigation Error", "Unable to open the dashboard.");
         }
     }
 
     @FXML
     private void onForgotPassword() {
-
         logger.info("Forgot password clicked");
-
-        showAlert("Info", "Password recovery is not implemented yet.");
+        showAlert(Alert.AlertType.INFORMATION, "Info", "Password recovery is not implemented yet.");
     }
 
     @FXML
-    private void onGoRegister() throws IOException {
-
+    private void onGoRegister() {
         logger.info("Navigate to register screen");
-        goToRegister();
-    }
-
-    private void goToRegister() throws IOException {
-        try{
-            Stage stage = (Stage) usernameField.getScene().getWindow();
-
-            stage.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(REG_FILE));
-            stage.getScene().setRoot(loader.load());
-        }catch (IOException ex){
+        try {
+            openView(REG_FILE);
+        } catch (IOException ex) {
             logger.error("Failed to load registration screen", ex);
-            throw new IOException("Failed to lad reg screen");
+            showAlert(Alert.AlertType.ERROR, "Navigation Error", "Unable to open the registration screen.");
         }
     }
 
@@ -190,9 +173,12 @@ public class LoginController {
         return username;
     }
 
-    private void showAlert(String title, String message) {
+    private void openView(String fxmlPath) throws IOException {
+        ViewNavigator.switchScene(usernameField, fxmlPath);
+    }
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
