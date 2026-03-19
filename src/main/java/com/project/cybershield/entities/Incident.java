@@ -22,7 +22,7 @@ public class Incident {
         this.attackTypeId = attackTypeId;
         this.severity = severity;
         this.note = note;
-        this.pcap_data = pcap_data;
+        this.pcap_data = pcap_Data;
     }
 
     public Long getId() {

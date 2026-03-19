@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.sql.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,16 +19,17 @@ public class UserRepo {
     private static final Logger logger = LoggerFactory.getLogger(UserRepo.class);
 
     public long insert(User user) throws SQLException, IOException {
-        String sql = "INSERT INTO users (username, password_hash, role, created_at) " +
-                "VALUES (?, ?, ?, ?) RETURNING id";
+        String sql = "INSERT INTO users (email, username, password_hash, role, created_at) " +
+                "VALUES (?, ?, ?, ?, ?) RETURNING id";
 
         try (Connection con = DatabaseConfig.connectionToDatabase();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setString(1, user.getUsername());
-            ps.setString(2, user.getPassword());
-            ps.setString(3, user.getRole().name());
-            ps.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setString(1, user.getEmail());
+            ps.setString(2, user.getUsername());
+            ps.setString(3, user.getPassword());
+            ps.setString(4, user.getRole().name());
+            ps.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -44,7 +44,7 @@ public class UserRepo {
     }
 
     public List<User> getAll() {
-        String sql = "SELECT id, username, password_hash, role, created_at FROM users";
+        String sql = "SELECT id, email, username, password_hash, role, created_at FROM users";
         List<User> list = new ArrayList<>();
 
         try (Connection con = DatabaseConfig.connectionToDatabase();
@@ -54,9 +54,11 @@ public class UserRepo {
             while (rs.next()) {
                 User user = new UserBuilder()
                         .setId(rs.getLong("id"))
+                        .setEmail(rs.getString("email"))
                         .setUsername(rs.getString("username"))
                         .setPassword(rs.getString("password_hash"))
                         .setRole(Role.valueOf(rs.getString("role")))
+                        .setCreated_at(rs.getTimestamp("created_at").toLocalDateTime())
                         .createUser();
                 list.add(user);
             }
@@ -109,7 +111,7 @@ public class UserRepo {
 
     public Optional<User> findByEmail(String email) throws SQLException {
         String sql = """
-    SELECT id, email, username, password_hash, role
+    SELECT id, email, username, password_hash, role, created_at
     FROM users
     WHERE email = ?
   """;
@@ -124,6 +126,7 @@ public class UserRepo {
 
                 return Optional.of(new User(
                         rs.getLong("id"),
+                        rs.getString("email"),
                         rs.getString("username"),
                         rs.getString("password_hash"),
                         Role.valueOf(rs.getString("role")),
@@ -136,7 +139,7 @@ public class UserRepo {
     }
 
     public Optional<User> findByUsername(String username) throws SQLException, IOException {
-        String sql = "SELECT id, username, password_hash, role, created_at FROM users WHERE username = ?";
+        String sql = "SELECT id, email, username, password_hash, role, created_at FROM users WHERE username = ?";
         try (Connection con = DatabaseConfig.connectionToDatabase();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -145,13 +148,14 @@ public class UserRepo {
             try (ResultSet rs = ps.executeQuery()) {
                 if (!rs.next()) return Optional.empty();
 
-                long id = rs.getLong("userId");
+                long id = rs.getLong("id");
+                String email = rs.getString("email");
                 String usernameTmp = rs.getString("username");
-                String hash = rs.getString("passwordHash");
+                String hash = rs.getString("password_hash");
                 Role role = Role.valueOf(rs.getString("role"));
                 LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
 
-                User u = new User(id, usernameTmp, hash, role, createdAt);
+                User u = new User(id, email, usernameTmp, hash, role, createdAt);
                 return Optional.of(u);
             }
         }

@@ -34,13 +34,19 @@ public class RegisterService {
     /**
      * Register new user sa sigurnosnim validacijama
      */
-    public User register(String username, String rawPassword, String confirm, Role role)
+    public User register(String username, String email, String rawPassword, String confirm, Role role)
             throws RegistrationException, SQLException, IOException {
 
-        logger.info("[REGISTER] Attempting to register user: {}", username);
+        logger.info("[REGISTER] Attempting to register user: {} ({})", username, email);
 
         validateUsername(username);
+        validateEmail(email);
         validatePassword(rawPassword, confirm);
+
+        if (userRepo.existsByEmail(email)) {
+            logger.warn("[REGISTER] Email already exists: {}", email);
+            throw new RegistrationException("Email already exists");
+        }
 
         if (userRepo.existsByUsername(username)) {
             logger.warn("[REGISTER] Username already exists: {}", username);
@@ -58,6 +64,7 @@ public class RegisterService {
         }
 
         User userToInsert = new UserBuilder()
+                .setEmail(email)
                 .setUsername(username)
                 .setPassword(passwordHash)
                 .setRole(role)
@@ -67,7 +74,7 @@ public class RegisterService {
         long newId = userRepo.insert(userToInsert);
         logger.info("[REGISTER] ✓ User registered successfully with ID: {}", newId);
 
-        return new User(newId, username, passwordHash, role, LocalDateTime.now());
+        return new User(newId, email, username, passwordHash, role, LocalDateTime.now());
     }
 
     private void validateUsername(String username) throws RegistrationException {
@@ -98,6 +105,16 @@ public class RegisterService {
 
         if (!password.equals(confirm)) {
             throw new RegistrationException("Passwords do not match");
+        }
+    }
+
+    private void validateEmail(String email) throws RegistrationException {
+        if (email == null || email.isBlank()) {
+            throw new RegistrationException("Email cannot be empty");
+        }
+
+        if (!Pattern.compile("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$").matcher(email).matches()) {
+            throw new RegistrationException("Email format is invalid");
         }
     }
 }
