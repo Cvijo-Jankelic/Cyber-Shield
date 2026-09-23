@@ -58,7 +58,11 @@ db.username=your_username
 db.password=your_password
 ```
 
-The application uses the tables `users`, `incidents`, `attack_types`, and `firewall_rules`.
+The application uses the tables `users`, `incidents`, `attack_types`, and `firewall_rules`. Apply the SQL migrations from the `sql/` folder to bring an existing schema up to date:
+
+```bash
+psql -d cyber_db -f sql/2026-09-23_add_email_and_pcap_data.sql
+```
 
 ### 3. Configure the AbuseIPDB API key
 
