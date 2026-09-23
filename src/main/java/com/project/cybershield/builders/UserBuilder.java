@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 
 public class UserBuilder {
     private Long id;
+    private String email;
     private String username;
     private String password;
     private Role role;
@@ -19,6 +20,11 @@ public class UserBuilder {
 
     public UserBuilder setUsername(String username) {
         this.username = username;
+        return this;
+    }
+
+    public UserBuilder setEmail(String email) {
+        this.email = email;
         return this;
     }
 
@@ -38,6 +44,6 @@ public class UserBuilder {
     }
 
     public User createUser() {
-        return new User(id, username, password, role, createdAt);
+        return new User(id, email, username, password, role, createdAt);
     }
 }
