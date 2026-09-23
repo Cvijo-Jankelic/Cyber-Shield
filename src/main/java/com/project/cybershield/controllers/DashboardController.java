@@ -198,10 +198,7 @@ public class DashboardController implements Initializable {
 
     private void openIncidentDetails(Incident incident) {
         try {
-            IncidentDetailsWindow window = new IncidentDetailsWindow(
-                    incident,
-                    "***REMOVED***"
-            );
+            IncidentDetailsWindow window = new IncidentDetailsWindow(incident);
             window.show();
 
             System.out.println("✓ Incident Details window opened");
@@ -229,10 +226,7 @@ public class DashboardController implements Initializable {
             Incident selected = incidentsTable.getSelectionModel().getSelectedItem();
 
             if (selected != null) {
-                IncidentDetailsWindow window = new IncidentDetailsWindow(
-                        selected,
-                        "***REMOVED***"
-                );
+                IncidentDetailsWindow window = new IncidentDetailsWindow(selected);
                 window.show();
             }
         }

@@ -50,4 +50,4 @@ database-properties
 src/main/resources/config
 
 ### Api ###
-src/main/java/com/project/cybershield/api/AbuseIPDBClient.java
+api-properties/

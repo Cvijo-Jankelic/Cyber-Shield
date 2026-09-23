@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -17,16 +18,52 @@ public class AbuseIPDBClient {
     private static final String API_BASE_URL = "https://api.abuseipdb.com/api/v2/";
     private static final String CHECK_ENDPOINT = "/check";
 
-    private String apiKey = "***REMOVED***";
+    private static final String API_KEY_ENV = "ABUSEIPDB_API_KEY";
+    private static final String API_KEY_FILE = "api-properties/api.properties";
+    private static final String API_KEY_PROPERTY = "abuseipdb.api.key";
+
+    private String apiKey;
     private final Gson gson;
 
     public AbuseIPDBClient() {
+        this.apiKey = loadApiKey();
         this.gson = new Gson();
     }
 
     public AbuseIPDBClient(String apiKey) {
         this.apiKey = apiKey;
         this.gson = new Gson();
+    }
+
+    /**
+     * Učitava API key iz ABUSEIPDB_API_KEY env varijable, a ako nje nema
+     * iz api-properties/api.properties (abuseipdb.api.key). Key se drži
+     * izvan git repozitorija i nikad se ne hardkodira u kod.
+     *
+     * @return API key ili null ako nije konfiguriran
+     */
+    private static String loadApiKey() {
+        String key = System.getenv(API_KEY_ENV);
+        if (key != null && !key.isBlank()) {
+            return key.trim();
+        }
+
+        Properties properties = new Properties();
+        try (FileInputStream in = new FileInputStream(API_KEY_FILE)) {
+            properties.load(in);
+        } catch (IOException e) {
+            System.err.println("AbuseIPDB API key nije konfiguriran - postavi "
+                    + API_KEY_ENV + " env varijablu ili kreiraj " + API_KEY_FILE
+                    + " s " + API_KEY_PROPERTY + "=<key>");
+            return null;
+        }
+
+        key = properties.getProperty(API_KEY_PROPERTY);
+        if (key == null || key.isBlank()) {
+            System.err.println(API_KEY_PROPERTY + " nedostaje u " + API_KEY_FILE);
+            return null;
+        }
+        return key.trim();
     }
 
     /**
@@ -39,6 +76,11 @@ public class AbuseIPDBClient {
      * @return ThreatIntelligenceReport s podacima
      */
     public ThreatIntelligenceReport checkIP(String ipAddress) throws Exception {
+        if (apiKey == null || apiKey.isBlank()) {
+            throw new Exception("AbuseIPDB API key nije konfiguriran - postavi "
+                    + API_KEY_ENV + " env varijablu ili " + API_KEY_FILE);
+        }
+
         System.out.println("═══════════════════════════════════════════");
         System.out.println("   ABUSEIPDB REST API CALL");
         System.out.println("═══════════════════════════════════════════");
