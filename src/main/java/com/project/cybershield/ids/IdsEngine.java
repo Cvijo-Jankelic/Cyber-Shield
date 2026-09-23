@@ -15,10 +15,8 @@ import com.project.cybershield.host.HostState;
 import com.project.cybershield.host.HostTracker;
 import com.project.cybershield.network.PacketSource;
 import com.project.cybershield.repository.IncidentRepo;
-import com.project.cybershield.test.PcapOfflineSource;
 import org.pcap4j.packet.Packet;
 
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.*;
@@ -191,25 +189,6 @@ public class IdsEngine {
         System.out.println("[FINAL] seen=" + seen
                 + " ip=" + ip + " tcp=" + tcp + " udp=" + udp + " icmp=" + icmp + " other=" + other
                 + " flows=" + flowTable.size() + " hosts=" + hostTracker.size());
-    }
-
-    // ---------------------------
-    // Convenience factory methods
-    // ---------------------------
-
-    /** Quick offline runner. */
-    public static IdsEngine offline(List<SignaturePayload> signatures, IdsConfig config, Path pcapFile) {
-        PacketSource src = new PcapOfflineSource(pcapFile);
-        return new IdsEngine(signatures, config, src);
-    }
-
-    /** Quick live runner. */
-
-    public static IdsEngine online(List<SignaturePayload> signatures, IdsConfig config, String networkInterface ) {
-       // PacketSource src = new PcapLiveSource(networkInterface);
-        //return new IdsEngine(signatures, config, )
-
-        return null;
     }
 
 }

@@ -4,9 +4,6 @@ package com.project.cybershield.controllers;
 import com.project.cybershield.entities.Incident;
 import com.project.cybershield.enums.SpeedLimit;
 import com.project.cybershield.enums.SupportedLanguage;
-import com.project.cybershield.network.PacketSource;
-import com.project.cybershield.test.IdsDebugMain;
-import com.project.cybershield.test.PcapLiveSource;
 import com.project.cybershield.ui.DownloadProgressPopup;
 import com.project.cybershield.ui.IncidentDetailsWindow;
 import com.project.cybershield.util.JavaFXProgressListener;
@@ -27,8 +24,6 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import org.pcap4j.core.PcapNativeException;
-import org.pcap4j.core.PcapNetworkInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -355,18 +350,6 @@ public class DashboardController implements Initializable {
             int total = incidentsList.size();
 
         }
-    }
-
-    /**
-     * Populate data from network devices live version
-     *
-     */
-
-    private void liveNetworkTrafficData() throws PcapNativeException {
-        PcapNetworkInterface nif = IdsDebugMain.pickDefaultInterface();
-        PacketSource src = new PcapLiveSource(nif);
-
-
     }
 
     /**
